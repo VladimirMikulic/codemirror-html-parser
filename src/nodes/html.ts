@@ -580,7 +580,14 @@ export default class HTMLElement extends Node {
 }
 
 // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
-const kMarkupPattern = /<!--[^]*?(?=-->)-->|<(\/?)([a-z][-.:0-9_a-z]*)\s*([^>]*?)(\/?)>/ig;
+// OLD kMarkupPattern: Matches all "valid" HTML elements
+// This would create an issue with passing <stdio.h>
+// It would interpret it as an HTML tag instead of plain text
+// const kMarkupPattern = /<!--[^]*?(?=-->)-->|<(\/?)([a-z][-.:0-9_a-z]*)\s*([^>]*?)(\/?)>/ig;
+
+// The new pattern marks only span HTML elements as valid
+// (That's what codemirror outputs)
+const kMarkupPattern = /<!--[^]*?(?=-->)-->|<(\/?)(span*)\s*([^>]*?)(\/?)>/gi;
 const kAttributePattern = /(^|\s)(id|class)\s*=\s*("([^"]+)"|'([^']+)'|(\S+))/ig;
 const kSelfClosingElements = {
 	area: true,
